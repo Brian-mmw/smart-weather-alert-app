@@ -2,28 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Weather Alerts App</title>
+  <title>Country Info App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 
-  <h2>Weather Alerts App</h2>
+<div class="container mt-5">
+  <div class="card p-4 shadow mx-auto" style="max-width: 500px;">
+    <h3 class="text-center mb-3">Country Info</h3>
 
-  <input
-    type="text"
-    id="state-input"
-    placeholder="Enter state abbreviation"
-  >
+    <input id="country-input" class="form-control mb-3" placeholder="Enter country">
 
-  <button id="fetch-alerts">
-    Get Weather Alerts
-  </button>
+    <button id="search-btn" class="btn btn-primary w-100 mb-3">
+      Search
+    </button>
 
-  <div id="alerts-display"></div>
+    <div id="result"></div>
+    <div id="error" class="alert alert-danger d-none"></div>
+  </div>
+</div>
 
-  <!-- IMPORTANT: must use hidden -->
-  <div id="error-message" class="hidden"></div>
-
-  <script src="./index.js"></script>
-
+<script src="index.js"></script>
 </body>
 </html>

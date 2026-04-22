@@ -1,50 +1,32 @@
-// index.js
-const weatherApi = "https://api.weather.gov/alerts/active?area="
+const input = document.getElementById("country-input");
+const btn = document.getElementById("search-btn");
+const result = document.getElementById("result");
+const error = document.getElementById("error");
 
-// Your code here!
-const input = document.getElementById("state-input");
-const button = document.getElementById("fetch-alerts");
-const displayDiv = document.getElementById("alerts-display");
-const errorDiv = document.getElementById("error-message");
+btn.addEventListener("click", () => {
+  const country = input.value;
 
-button.addEventListener("click", () => {
-  const state = input.value;
+  error.textContent = "";
+  error.classList.add("d-none");
+  result.innerHTML = "";
 
-  // clear error before fetch
-  errorDiv.textContent = "";
-  errorDiv.classList.add("hidden");
+  fetch(`https://restcountries.com/v3.1/name/${country}`)
+    .then(res => res.json())
+    .then(data => {
+      const c = data[0];
 
-  fetch(`https://api.weather.gov/alerts/active?area=${state}`)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("Network failure");
-      }
-      return res.json();
-    })
-    .then((data) => {
-      displayDiv.innerHTML = "";
+      result.innerHTML = `
+        <img src="${c.flags.png}" class="img-fluid mb-2">
+        <h5>${c.name.common}</h5>
+        <p>Capital: ${c.capital}</p>
+        <p>Population: ${c.population}</p>
+        <p>Region: ${c.region}</p>
+      `;
 
-      const alerts = data.features;
-
-      const count = document.createElement("p");
-      count.textContent = `Weather Alerts: ${alerts.length}`;
-      displayDiv.appendChild(count);
-
-      alerts.forEach((alert) => {
-        const p = document.createElement("p");
-        p.textContent = alert.properties.headline;
-        displayDiv.appendChild(p);
-      });
-
-      // clear input
       input.value = "";
-
-      // clear error after success
-      errorDiv.textContent = "";
-      errorDiv.classList.add("hidden");
     })
-    .catch((error) => {
-      errorDiv.textContent = error.message;
-      errorDiv.classList.remove("hidden");
+    .catch(() => {
+      error.textContent = "Country not found";
+      error.classList.remove("d-none");
     });
 });
